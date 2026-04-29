@@ -1,113 +1,70 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Sistema Solar VR</title>
-  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-  <style>
-    #info-panel {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(0,0,20,0.95);
-      border: 2px solid #4fc3f7;
-      border-radius: 15px;
-      padding: 20px;
-      color: white;
-      font-family: Arial;
-      z-index: 999;
-      width: 80%;
-      max-width: 350px;
-      text-align: center;
-    }
-    #info-panel h2 { color: #FDB813; margin: 0 0 10px; font-size: 22px; }
-    #info-panel p { font-size: 14px; line-height: 1.6; }
-    #close-btn {
-      background: #4fc3f7;
-      border: none;
-      color: #000;
-      padding: 8px 20px;
-      border-radius: 8px;
-      font-size: 16px;
-      margin-top: 10px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    #quiz-panel {
-      display: none;
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,0,20,0.95);
-      border: 2px solid #FDB813;
-      border-radius: 15px;
-      padding: 15px;
-      color: white;
-      font-family: Arial;
-      z-index: 999;
-      width: 85%;
-      max-width: 380px;
-      text-align: center;
-    }
-    #quiz-panel h3 { color: #FDB813; margin: 0 0 10px; font-size: 16px; }
-    .quiz-btn {
-      display: block;
-      width: 100%;
-      background: #1a3a5c;
-      border: 1px solid #4fc3f7;
-      color: white;
-      padding: 8px;
-      border-radius: 8px;
-      margin: 5px 0;
-      font-size: 13px;
-      cursor: pointer;
-    }
-    .quiz-btn:hover { background: #4fc3f7; color: #000; }
-    #quiz-result { font-size: 15px; font-weight: bold; margin-top: 8px; }
-    #quiz-next {
-      background: #FDB813;
-      border: none;
-      color: #000;
-      padding: 8px 20px;
-      border-radius: 8px;
-      font-size: 14px;
-      margin-top: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      display: none;
-    }
-    #score {
-      position: fixed;
-      top: 15px;
-      right: 15px;
-      background: rgba(0,0,20,0.8);
-      border: 1px solid #FDB813;
-      color: #FDB813;
-      padding: 8px 14px;
-      border-radius: 10px;
-      font-family: Arial;
-      font-size: 14px;
-      z-index: 998;
-    }
-    #hint {
-      position: fixed;
-      bottom: 15px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,0.7);
-      color: #aaa;
-      padding: 6px 14px;
-      border-radius: 8px;
-      font-family: Arial;
-      font-size: 12px;
-      z-index: 997;
-    }
-  </style>
-</head>
-<body>
+<div id="container">
+  <div id="loading">
+    <div class="spinner"></div>
+    <h2>Loading Solar System...</h2>
+    <p>Initializing 3D environment and planetary data</p>
+  </div>
 
+  <div id="ui-container">
+    <h1 id="title">3D Solar System Explorer</h1>
+
+    <div id="instructions">
+      <h3>Controls</h3>
+      <ul>
+        <li>Click on planets to select them</li>
+        <li>Use mouse to rotate the view</li>
+        <li>Scroll to zoom in/out</li>
+        <li>Adjust time speed with the slider</li>
+        <li>Use planet buttons for quick navigation</li>
+      </ul>
+    </div>
+
+    <div id="planet-info">
+      <h2><span class="planet-icon" id="selected-planet-icon"></span> <span id="selected-planet-name">Planet Name</span></h2>
+      <div class="info-row">
+        <span class="info-label">Type:</span>
+        <span class="info-value" id="planet-type">Terrestrial</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Diameter:</span>
+        <span class="info-value" id="planet-diameter">12,742 km</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Distance from Sun:</span>
+        <span class="info-value" id="planet-distance">149.6 million km</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Orbital Period:</span>
+        <span class="info-value" id="planet-period">365.25 days</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Moons:</span>
+        <span class="info-value" id="planet-moons">1</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Description:</span>
+      </div>
+      <p id="planet-description">Planet description goes here...</p>
+    </div>
+
+    <div id="planet-selector">
+      <!-- Planet buttons will be generated here -->
+    </div>
+
+    <div id="controls">
+      <div class="control-group">
+        <button id="play-pause">⏸️ Pause</button>
+        <button id="reset-view">Reset View</button>
+      </div>
+
+      <div class="control-group" id="time-control">
+        <span>Time Speed:</span>
+        <input type="range" id="time-slider" min="0" max="200" value="10">
+        <span id="time-factor">1x</span>
+      </div>
+    </div>
+  </div>
+</div>
   <div id="score">⭐ Puntos: <span id="pts">0</span></div>
   <div id="hint">👆 Toca un planeta para explorar</div>
 
